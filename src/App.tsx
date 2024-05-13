@@ -2,30 +2,8 @@ import React, { useEffect, useState } from 'react';
 // import { useNotification } from './customHookd';
 import './App.css'
 import axios from 'axios';
+import { useNotification } from './customHooks';
 
-
-
-
-
-
-
-
-const useNotification = () => {
-  const [notification, setNotification] = useState({})
-
-  useEffect(() => {
-    (
-      async () => {
-        const response = await axios.get("https://sum-server.100xdevs.com/notifications")
-        setNotification(response.data)
-        console.log(response.data)
-      }
-    )()
-
-    console.log(notification)
-    return notification
-  }, [])
-}
 
 
 
@@ -45,8 +23,9 @@ function App() {
 
 
         <hr />
-
+        <h1>custom data fetching hook</h1>
         <Notification />
+
       </div>
     </>
   )
@@ -91,13 +70,17 @@ class MyComponent extends React.Component {
   }
 }
 
-function Notification() {
-  const [notification] = useNotification()
 
-  console.log(notification)
+function Notification() {
+  const data: any = useNotification()
   return (
     <div>
-      <p>{data}</p>
+      <p>Network :{data.network}</p>
+      <p>Jobs :{data.jobs}</p>
+      <p>Messaging :{data.messaging}</p>
+      <p>Notifications :{data.notifications}</p>
     </div>
   )
 }
+
+
