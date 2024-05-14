@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 // import { useNotification } from './customHookd';
 import './App.css'
 import axios from 'axios';
-import { useNotification } from './customHooks';
+import { useAutofetch, useFetch, useNotification } from './customHooks';
 
 
 
@@ -72,7 +72,20 @@ class MyComponent extends React.Component {
 
 
 function Notification() {
-  const data: any = useNotification()
+  // const { data, loading } = useNotification()
+
+  const { data, loading } = useFetch("https://sum-server.100xdevs.com/notifications")
+
+  // const { data, loading } = useAutofetch(5, "https://sum-server.100xdevs.com/notifications")
+
+  // console.log(data, loading)
+
+  if (loading) {
+    return (
+      <div>Loading</div>
+    )
+  }
+
   return (
     <div>
       <p>Network :{data.network}</p>
@@ -80,7 +93,7 @@ function Notification() {
       <p>Messaging :{data.messaging}</p>
       <p>Notifications :{data.notifications}</p>
     </div>
-  )
+  );
 }
 
 
