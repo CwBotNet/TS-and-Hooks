@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 // import { useNotification } from './customHookd';
 import './App.css'
-import axios from 'axios';
 import { useAutofetch, useFetch, useNotification } from './customHooks';
+import UserStatus from './components/UserStatus';
+import Counter from './components/Counter';
 
 
 
@@ -11,6 +12,8 @@ function App() {
 
   return (
     <>
+      <UserStatus />
+      <Counter />
       <div>
         <h1>Ts and Hooks</h1>
 
@@ -72,7 +75,7 @@ class MyComponent extends React.Component {
 
 
 function Notification() {
-  // const { data, loading } = useNotification()
+  // const { data } = useNotification()
 
   const { data, loading } = useFetch("https://sum-server.100xdevs.com/notifications")
 
@@ -95,5 +98,9 @@ function Notification() {
     </div>
   );
 }
+
+
+
+
 
 

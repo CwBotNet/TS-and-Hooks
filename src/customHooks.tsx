@@ -5,17 +5,12 @@ import { useEffect, useState } from "react";
 
 
 const useNotification = () => {
-
     const [notification, setNotification] = useState({})
-    const [loading, setLoading] = useState(false)
-
     useEffect(() => {
         try {
             (
                 async () => {
-                    setLoading(true)
                     const response = await axios.get("https://sum-server.100xdevs.com/notifications")
-                    setLoading(false)
                     setNotification(response.data)
                 }
             )()
@@ -25,7 +20,6 @@ const useNotification = () => {
     }, [])
     return {
         data: notification,
-        loading: loading
     }
 }
 
@@ -65,11 +59,25 @@ const useAutofetch = (sec: number, url: string) => {
         setData(response.data)
     }
 
+
     useEffect(() => {
-        setInterval(() => {
+
+        const value = setInterval(() => {
             getData()
         }, sec * 1000)
+
+        axios.get(url).then(res => {
+            setLoading(true)
+            setData(res.data)
+            setLoading(false)
+        })
+
+        return () => {
+            clearInterval(value)
+        }
     }, [sec])
+
+
 
     return {
         data: data,
@@ -78,8 +86,87 @@ const useAutofetch = (sec: number, url: string) => {
 }
 
 
+
+const useMousePointer = () => {
+    // window.addEventListener('mousemove', handleMouseMove);
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+
+    function handelMouseEvent(e) {
+        setMousePosition({ x: e.clientX, y: e.clientY })
+    }
+
+    useEffect(() => {
+        window.addEventListener('mousemove', handelMouseEvent)
+
+        return () => {
+            window.removeEventListener('mousemove', handelMouseEvent)
+        }
+    }, [])
+
+
+    return mousePosition
+
+}
+
+
+const useIsOnline = () => {
+    const [online, setOnline] = useState(window.navigator.onLine);
+
+    useEffect(() => {
+        window.addEventListener(
+            "online",
+            () => {
+                setOnline(true)
+            }
+        )
+
+        window.addEventListener("offline", () => {
+            setOnline(false)
+
+        })
+    }, [])
+
+    return online
+}
+
+
+const useInterval = (callback, delay: number) => {
+    useEffect(() => {
+        const intervalId = setInterval(callback, delay)
+
+        return () => {
+            clearInterval(intervalId)
+        }
+    }, [callback, delay])
+}
+
+
+type InputValue = string | number
+
+const useDebounce = (value: InputValue, delay: number) => {
+    const [debouncedValue, setDebouncedValue] = useState(value)
+
+    useEffect(() => {
+        const timerId = setTimeout(() => {
+            setDebouncedValue(value)
+        }, delay)
+
+        return () => {
+            clearTimeout(timerId)
+        }
+    }, [value, delay])
+
+    return debouncedValue
+
+}
+
+
 export {
     useNotification,
     useFetch,
-    useAutofetch
+    useAutofetch,
+    useMousePointer,
+    useIsOnline,
+    useInterval,
+    useDebounce
 }
