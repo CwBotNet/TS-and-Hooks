@@ -5,6 +5,7 @@ import './index.css'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { MousePounter } from './pages/MousePounter.tsx'
 import Debounce from './pages/Debounce.tsx'
+import Todo from './pages/Todo.tsx'
 
 
 const router = createBrowserRouter([
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
   {
     path: "/debounce",
     element: <Debounce />
+  },
+  {
+    path: "/todo",
+    element: <Todo />
   }
 ])
 
