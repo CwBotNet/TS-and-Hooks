@@ -1,11 +1,11 @@
 
-interface IaddTodo {
+interface AddTodo {
     title: string,
     description: string
 }
 
 interface Todo {
-    todo: IaddTodo
+    todo: AddTodo
 }
 
 
